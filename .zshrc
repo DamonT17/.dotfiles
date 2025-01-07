@@ -25,7 +25,7 @@ alias reload="source ~/.zshrc"
 
 # Utilities
 #--------------
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias dot="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias mkdir="mkdir -pv"
 alias ping="ping -c 5"
 alias upgrade="sudo apt update && sudo apt upgrade"
