@@ -1,2 +1,5 @@
 # Ignore .dotfiles directory to avoid recursion
 .dotfiles
+
+# Ignore zsh completion cache
+.config/zsh/.zcompdump
