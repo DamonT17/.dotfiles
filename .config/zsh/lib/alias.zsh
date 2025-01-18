@@ -2,13 +2,13 @@
 
 # Zsh aliases for common commands and frequently used tools (e.g., git, docker, etc.).
 
-command_exists() {
+package_exists() {
   hash "$1" 2> /dev/null
 }
 
 # Directory
 #--------------
-if command_exists exa; then
+if package_exists exa; then
   alias l="exa --icons --group-directories-first"
   alias la="exa -a --icons --group-directories-first"   # List all files
   alias ll="exa -lah --icons --group-directories-first" # List all files with details
