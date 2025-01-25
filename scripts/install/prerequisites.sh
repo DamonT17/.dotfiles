@@ -12,13 +12,13 @@ core_packages=(
 
 # Prints help information on script start
 print_help() {
-  echo -e "Usage: $0 [options]"\
-  "Options:"\
-  "  --help\t\tShow help information"\
-  "  --force\t\tBypass continuation prompt and install packages\n"\
-  "Installs core prerequisite packages when setting up a new system and its dotfiles.\n"\
-  "This script will detect the system type and install the core packages using the appropriate package manager.\n"\
-  "Elevated permissions may be needed!\n"
+  echo -e "Usage: prerequisites.sh [options]\n"\
+    "Options:\n"\
+    "  --help\t\tShow help information\n"\
+    "  --force\t\tBypass prompts and auto-accept actions\n\n"
+    "Installs core prerequisite packages when setting up a new system and its dotfiles.\n"\
+    "This script will detect the system type and install the core packages using the appropriate package manager.\n"\
+    "Elevated permissions may be needed!\n"
 }
 
 # Check if a package already exists on the system
@@ -28,18 +28,18 @@ package_exists() {
 
 # Installation on Debian-based systems
 install_debian() {
-  echo -e "Installing ${1} via apt-get"
+  echo -e "Installing ${1} via apt-get\n"
   sudo apt install $1
 }
 
 # Installation on MacOS
 install_macos() {
-  echo -e "Installing ${1} via Homebrew"
+  echo -e "Installing ${1} via Homebrew\n"
   brew install $1
 }
 
 setup_homebrew() {
-  echo -e "Setting up Homebrew"
+  echo -e "Setting up Homebrew\n"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   export PATH="/opt/homebrew/bin:$PATH"
 }
@@ -53,14 +53,14 @@ install_package() {
     if ! package_exists brew; then setup_homebrew; fi
     install_macos $pkg # MacOS via Homebrew
   else
-    echo -e "Skipping ${pkg}, system type not detected or package manager not found"
+    echo -e "Skipping ${pkg}, system type not detected or package manager not found\n"
   fi
 }
 
 # Show help information
-print_help
 if [[ $* == *"--help"* ]]; then
-  exit
+  print_help
+  exit 0
 fi
 
 # Prompt confirmation before continuing
@@ -79,7 +79,7 @@ for pkg in ${core_packages[@]}; do
   if ! package_exists $pkg
     install_package $pkg
   else
-    echo -e "${pkg} is already installed, skipping"
+    echo -e "${pkg} is already installed, skipping\n"
   fi
 done
 

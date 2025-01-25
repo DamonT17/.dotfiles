@@ -138,11 +138,11 @@ trap cleanup EXIT # Cleanup tasks on exit
 
 # Show help information
 if [[ $ARGS == *"--help"* ]]; then
-  echo -e "Usage: install.sh [OPTIONS]\n"
-  echo -e "OPTIONS:"
-  echo -e "  --help: Show help information"
-  echo -e "  --force: Bypass all prompts and auto-accept all actions"
-  echo -e "  --no-clear: Do not clear the terminal before running the script"
+  echo -e "Usage: install.sh [OPTIONS]\n"\
+    "Options:\n"\
+    "  --help\t\tShow help information\n"
+    "  --force\t\tBypass prompts and auto-accept actions\n"
+    "  --no-clear\t\tDo not clear the terminal before script entry\n"
   exit 0
 fi
 
