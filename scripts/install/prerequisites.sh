@@ -86,7 +86,7 @@ fi
 
 # Installs core packages if not present on the system
 for pkg in ${core_packages[@]}; do
-  if ! package_exists $pkg
+  if ! package_exists $pkg; then
     install_package $pkg
   else
     echo -e "${pkg} is already installed, skipping"
