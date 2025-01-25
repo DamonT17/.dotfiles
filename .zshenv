@@ -13,7 +13,7 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 
 # Set default applications
 #--------------
-export EDITOR="nvim"
+# export EDITOR="nvim"
 
 # Variables with respect to XDG directories
 #--------------

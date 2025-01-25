@@ -11,7 +11,7 @@ core_packages=(
 )
 
 # Prints help information on script start
-function print_help() {
+print_help() {
   echo -e "Usage: $0 [options]"\
   "Options:"\
   "  --help\t\tShow help information"\
@@ -27,25 +27,25 @@ package_exists() {
 }
 
 # Installation on Debian-based systems
-function install_debian() {
+install_debian() {
   echo -e "Installing ${1} via apt-get"
   sudo apt install $1
 }
 
 # Installation on MacOS
-function install_macos() {
+install_macos() {
   echo -e "Installing ${1} via Homebrew"
   brew install $1
 }
 
-function setup_homebrew() {
+setup_homebrew() {
   echo -e "Setting up Homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   export PATH="/opt/homebrew/bin:$PATH"
 }
 
 # Installs core packages using the appropriate package manager for the detected OS
-function install_package() {
+install_package() {
   pkg=$1
   if [ -f "/etc/debian_version" ] && package_exists apt; then
     install_debian $pkg # Debian via apt
