@@ -12,12 +12,12 @@ core_packages=(
 
 # Prints help information on script start
 print_help() {
-  echo -e "Usage: prerequisites.sh [options]\n"
-  echo -e "Options:\n"\
+  echo -e "Usage: prerequisites.sh [options]"
+  echo -e "Options:"\
     "  --help\tShow help information\n"\
-    "  --force\tBypass prompts and auto-accept actions\n\n"
-  echo -e "Installs core prerequisite packages when setting up a new system and its dotfiles.\n"
-  echo -e "This script will detect the system type and install the core packages using the appropriate package manager.\n"
+    "  --force\tBypass prompts and auto-accept actions\n"
+  echo -e "Installs core prerequisite packages when setting up a new system and its dotfiles."
+  echo -e "This script will detect the system type and install the core packages using the appropriate package manager."
   echo -e "Elevated permissions may be needed!"
 }
 
@@ -28,13 +28,13 @@ package_exists() {
 
 # Installation on Debian-based systems
 install_debian() {
-  echo -e "Installing ${1} via apt-get\n"
+  echo -e "Installing ${1} via apt-get"
   sudo apt install $1
 }
 
 # Installation on MacOS
 install_macos() {
-  echo -e "Installing ${1} via Homebrew\n"
+  echo -e "Installing ${1} via Homebrew"
   brew install $1
 }
 
@@ -53,7 +53,7 @@ install_package() {
     if ! package_exists brew; then setup_homebrew; fi
     install_macos $pkg # MacOS via Homebrew
   else
-    echo -e "Skipping ${pkg}, system type not detected or package manager not found\n"
+    echo -e "Skipping ${pkg}, system type not detected or package manager not found"
   fi
 }
 
@@ -68,7 +68,7 @@ if [[ $* == *"--help"* ]]; then
 fi
 
 # Entry message
-echo -e "~/.dotfiles --> Core Prerequisite Packages Installation\n"
+echo -e "~/.dotfiles --> Core Prerequisite Packages Installation"
 echo -e "This script will install the following core packages:\n"\
   "  - git\n"\
   "  - vim\n"\
@@ -90,7 +90,7 @@ for pkg in ${core_packages[@]}; do
   if ! package_exists $pkg
     install_package $pkg
   else
-    echo -e "${pkg} is already installed, skipping\n"
+    echo -e "${pkg} is already installed, skipping"
   fi
 done
 
