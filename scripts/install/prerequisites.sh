@@ -10,6 +10,12 @@ core_packages=(
   'zsh' # Shell
 )
 
+# Colors
+PURPLE='\033[0;35m'
+YELLOW='\033[1;33m'
+LIGHT='\x1b[2m'
+RESET='\033[0m'
+
 # Prints help information on script start
 print_help() {
   echo -e "Usage: prerequisites.sh [options]"
@@ -28,18 +34,18 @@ package_exists() {
 
 # Installation on Debian-based systems
 install_debian() {
-  echo -e "Installing ${1} via apt-get"
+  echo -e "${PURPLE}Installing ${1} via apt-get${RESET}"
   sudo apt install $1
 }
 
 # Installation on MacOS
 install_macos() {
-  echo -e "Installing ${1} via Homebrew"
+  echo -e "${PURPLE}Installing ${1} via Homebrew${RESET}"
   brew install $1
 }
 
 setup_homebrew() {
-  echo -e "Setting up Homebrew\n"
+  echo -e "${PURPLE}Setting up Homebrew${RESET}"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   export PATH="/opt/homebrew/bin:$PATH"
 }
@@ -53,7 +59,7 @@ install_package() {
     if ! package_exists brew; then setup_homebrew; fi
     install_macos $pkg # MacOS via Homebrew
   else
-    echo -e "Skipping ${pkg}, system type not detected or package manager not found"
+    echo -e "${YELLOW}Skipping ${pkg}, system type not detected or package manager not found${RESET}"
   fi
 }
 
@@ -68,18 +74,18 @@ if [[ $* == *"--help"* ]]; then
 fi
 
 # Entry message
-echo -e "~/.dotfiles --> Core Prerequisite Packages Installation"
-echo -e "This script will install the following core packages:\n"\
+echo -e "${PURPLE}~/.dotfiles --> Core Prerequisite Packages Installation${RESET}"
+echo -e "${LIGHT}This script will install the following core packages:\n"\
   "  - git\n"\
   "  - vim\n"\
-  "  - zsh\n"
+  "  - zsh\n${RESET}"
 
 # Prompt confirmation before continuing
 if [[ ! $* == *"--force"* ]]; then
-  echo -e "Do you wish to install the prerequisite core packages? (y/N)"
+  echo -e "${PURPLE}Do you wish to install the prerequisite core packages? (y/N)${RESET}"
   read -t 15 -r
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo -e "Installation aborted, exiting..."
+    echo -e "${YELLOW}Installation aborted, exiting...${RESET}"
     exit 0
   fi
 fi
@@ -89,10 +95,10 @@ for pkg in ${core_packages[@]}; do
   if ! package_exists $pkg; then
     install_package $pkg
   else
-    echo -e "${pkg} is already installed, skipping"
+    echo -e "${YELLOW}${pkg} is already installed, skipping${RESET}"
   fi
 done
 
 # Script finish, exit with success
-echo -e "\nCore packages installed successfully, exiting..."
+echo -e "\n${PURPLE}Core packages installed successfully, exiting...${RESET}"
 exit 0
