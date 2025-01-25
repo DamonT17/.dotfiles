@@ -76,7 +76,7 @@ echo -e "This script will install the following core packages:\n"\
 
 # Prompt confirmation before continuing
 if [[ ! $* == *"--force"* ]]; then
-  echo -e "Do you wish to install the prerequisite core packages? (y/N)"
+  echo -en "Do you wish to install the prerequisite core packages? (y/N)"
   read -t 15 -n 1 -r
   echo
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
