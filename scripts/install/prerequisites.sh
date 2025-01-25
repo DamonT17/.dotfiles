@@ -13,10 +13,10 @@ core_packages=(
 # Prints help information on script start
 print_help() {
   echo -e "Usage: prerequisites.sh [options]\n"\
-    "Options:\n"\
-    "  --help\t\tShow help information\n"\
-    "  --force\t\tBypass prompts and auto-accept actions\n\n"
-    "Installs core prerequisite packages when setting up a new system and its dotfiles.\n"\
+  echo -e "Options:\n"\
+    "  --help\tShow help information\n"\
+    "  --force\tBypass prompts and auto-accept actions\n\n"
+  echo -e "Installs core prerequisite packages when setting up a new system and its dotfiles.\n"\
     "This script will detect the system type and install the core packages using the appropriate package manager.\n"\
     "Elevated permissions may be needed!\n"
 }
@@ -57,15 +57,26 @@ install_package() {
   fi
 }
 
+# ------------------------------------------------------------------------ #
+# Script Entry Point
+# ------------------------------------------------------------------------ #
+
 # Show help information
 if [[ $* == *"--help"* ]]; then
   print_help
   exit 0
 fi
 
+# Entry message
+echo -e "~/.dotfiles --> Core Prerequisite Packages Installation\n"
+echo -e "This script will install the following core packages:\n"\
+  "  - git\n"\
+  "  - vim\n"\
+  "  - zsh\n"
+
 # Prompt confirmation before continuing
 if [[ ! $* == *"--force"* ]]; then
-  echo -e "Do you wish to continue installing core packages? (y/N)"
+  echo -e "Do you wish to install the prerequisite core packages? (y/N)"
   read -t 15 -n 1 -r
   echo
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
