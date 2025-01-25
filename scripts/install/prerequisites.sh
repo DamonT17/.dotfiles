@@ -12,13 +12,13 @@ core_packages=(
 
 # Prints help information on script start
 print_help() {
-  echo -e "Usage: prerequisites.sh [options]\n"\
+  echo -e "Usage: prerequisites.sh [options]\n"
   echo -e "Options:\n"\
     "  --help\tShow help information\n"\
     "  --force\tBypass prompts and auto-accept actions\n\n"
-  echo -e "Installs core prerequisite packages when setting up a new system and its dotfiles.\n"\
-    "This script will detect the system type and install the core packages using the appropriate package manager.\n"\
-    "Elevated permissions may be needed!\n"
+  echo -e "Installs core prerequisite packages when setting up a new system and its dotfiles.\n"
+  echo -e "This script will detect the system type and install the core packages using the appropriate package manager.\n"
+  echo -e "Elevated permissions may be needed!"
 }
 
 # Check if a package already exists on the system
