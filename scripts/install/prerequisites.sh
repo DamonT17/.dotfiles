@@ -13,7 +13,7 @@ core_packages=(
 # Prints help information on script start
 print_help() {
   echo -e "Usage: prerequisites.sh [options]"
-  echo -e "Options:"\
+  echo -e "Options:\n"\
     "  --help\tShow help information\n"\
     "  --force\tBypass prompts and auto-accept actions\n"
   echo -e "Installs core prerequisite packages when setting up a new system and its dotfiles."
