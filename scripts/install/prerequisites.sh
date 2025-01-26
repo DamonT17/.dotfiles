@@ -11,10 +11,10 @@ core_packages=(
 )
 
 # Colors
-PURPLE='\033[0;35m'
-YELLOW='\033[1;33m'
-LIGHT='\x1b[2m'
-RESET='\033[0m'
+YELLOW='\x1b[33m'
+PURPLE='\x1b[35m'
+FAINT='\x1b[2m'
+RESET='\x1b[0m'
 
 # Prints help information on script start
 print_help() {
@@ -75,7 +75,7 @@ fi
 
 # Entry message
 echo -e "${PURPLE}~/.dotfiles --> Core Prerequisite Packages Installation${RESET}"
-echo -e "${LIGHT}This script will install the following core packages:\n"\
+echo -e "${FAINT}This script will install the following core packages:\n"\
   "  - git\n"\
   "  - vim\n"\
   "  - zsh\n${RESET}"

@@ -26,6 +26,16 @@ AUTO_RESPONSE=false     # Auto-accept all user input prompts
 START_TIME=$(date +%s)
 SOURCE_DIR=$(dirname ${0})
 
+# Colors
+RED='\x1b[31m'
+GREEN='\x1b[32m'
+YELLOW='\x1b[33m'
+BLUE='\x1b[34m'
+PURPLE='\x1b[35m'
+BOLD='\x1b[1m'
+FAINT='\x1b[2m'
+RESET='\x1b[0m'
+
 #+--- Helper Functions ---+#
 # Check if a package already exists on the system
 package_exists() {
@@ -36,10 +46,10 @@ package_exists() {
 package_verify() {
   if ! package_exists $1; then
     if $2; then
-      echo -e "ERROR: $1 is not installed. Please install $1 before continuing. Exiting..."
+      echo -e "${RED}ERROR: ${PURPLE}$1${RESET} is not installed. Please install $1 before continuing. Exiting..."
       exit 1
     else
-      echo -e " WARNING: $1 is not installed"
+      echo -e "${YELLOW}WARNING: ${PURPLE}$1${RESET} is not installed"
     fi
   fi
 }
@@ -47,15 +57,15 @@ package_verify() {
 # Installs / updates MacOS packages using Homebrew
 install_packages_macos() {
   if ! package_exists brew; then
-    echo -e "Homebrew is not installed. Do you want to install Homebrew? (y/N)"
-    read -t $PROMPT_TIMEOUT -n 1 -r user_response
+    echo -e "${PURPLE}Homebrew is not installed. Do you want to install Homebrew? (y/N)${RESET}"
+    read -t $PROMPT_TIMEOUT -r user_response
     if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
-      echo -en "🍺 Installing Homebrew...\n"
+      echo -e "🍺 ${PURPLE}Installing Homebrew...${RESET}"
       brew_url="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
       /bin/bash -c "$(curl -fsSL $brew_url)"
       export PATH="/opt/homebrew/bin:$PATH"
     else
-      echo -e "\nSkipping Homebrew installation and installation / update of system packages"
+      echo -e "${PURPLE}Skipping Homebrew installation and installation / update of system packages${RESET}"
       return
     fi
   fi
@@ -65,10 +75,10 @@ install_packages_macos() {
 
 # Installs / updates a package using the appropriate package manager for the detected OS
 install_packages() {
-  echo -e "Do you want to install / update system packages (y/N)"
-  read -t $PROMPT_TIMEOUT -n 1 -r user_response
+  echo -e "${PURPLE}Do you want to install / update system packages (y/N)${RESET}"
+  read -t $PROMPT_TIMEOUT -r user_response
   if [[ ! $user_response =~ ^[Yy]$ ]] && [[ $AUTO_RESPONSE != true ]]; then
-    echo -e "\nSkipping package installation / update"
+    echo -e "${YELLOW}Skipping package installation / update${RESET}"
     return
   fi
 
@@ -87,10 +97,10 @@ install_packages() {
 apply_preferences() {
   # Select default shell
   if [[ $SHELL != *"zsh"* ]] && package_exists zsh; then
-    echo -e "Do you want to set Zsh as the default shell? (y/N)"
-    read -t $PROMPT_TIMEOUT -n 1 -r user_response
+    echo -e "${PURPLE}Do you want to set Zsh as the default shell? (y/N)${RESET}"
+    read -t $PROMPT_TIMEOUT -r user_response
     if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
-      echo -e "Setting Zsh as the default shell"
+      echo -e "${PURPLE}Setting Zsh as the default shell${RESET}"
       chsh -s $(which zsh) $USER
     fi
   fi
@@ -112,13 +122,13 @@ finalize_setup() {
   fi
 
   # Output completion message
-  echo -e "Setup complete! Total time: ${total_time}"
+  echo -e "${GREEN}Setup complete! ${PURPLE}Total time: ${total_time}${RESET}"
 
   # Refresh terminal
   exec $SHELL
 
   # Prompt to restart the system
-  echo -e "Press any key to exit.\n"
+  echo -e "${PURPLE}Press any key to exit.${RESET}\n"
   read -t $PROMPT_TIMEOUT -n 1 -s
 
   exit 0
@@ -138,11 +148,11 @@ trap cleanup EXIT # Cleanup tasks on exit
 
 # Show help information
 if [[ $ARGS == *"--help"* ]]; then
-  echo -e "Usage: install.sh [OPTIONS]\n"\
-    "Options:\n"\
-    "  --help\t\tShow help information\n"
-    "  --force\t\tBypass prompts and auto-accept actions\n"
-    "  --no-clear\t\tDo not clear the terminal before script entry\n"
+  echo -e "Usage: install.sh [options]"
+  echo -e  "Options:\n"\
+    "  --help\tShow help information\n"
+    "  --force\tBypass prompts and auto-accept actions\n"
+    "  --no-clear\tDo not clear the terminal before script entry\n"
   exit 0
 fi
 
@@ -158,30 +168,30 @@ if [[ $ARGS == *"--force"* ]]; then
 fi
 
 # Entry message
-echo -e "~/.dotfiles installation / update script"\
-  "Source: ${DOTFILES_REPO}"\
-  "Destination: ${DOTFILES_DIR}\n"
+echo -e "${PURPLE}~/.dotfiles --> Installation / Update Script${RESET}"
+echo -e "${PURPLE}Source: ${DOTFILES_REPO}${RESET}"
+echo -e "${PURPLE}Destination: ${DOTFILES_DIR}${RESET}"
 
 # Install core packages using the appropriate package manager for the detected OS
 if ! package_exists git; then
-  echo -e "Core packages not detected, running prerequisites script...\n"
+  echo -e "${YELLOW}Core packages not detected, running prerequisites script...${RESET}"
   bash <(curl -s -L 'https://raw.githubusercontent.com/DamonT17/.dotfiles/refs/heads/main/scripts/install/prerequisites.sh')
 fi
 
 # Clone or update the dotfiles repository
 if [[ ! -d "${DOTFILES_DIR}" ]]; then
-  echo -e "Cloning ${DOTFILES_REPO} to ${DOTFILES_DIR}\n"
+  echo -e "${PURPLE}Cloning ${DOTFILES_REPO} to ${DOTFILES_DIR}${RESET}"
   mkdir -p "${DOTFILES_DIR}" && git clone --recursive "${DOTFILES_REPO}" "${DOTFILES_DIR}"
 else
-  echo -e "Updating ${DOTFILES_DIR} from ${DOTFILES_REPO}\n"
+  echo -e "${PURPLE}Updating ${DOTFILES_DIR} from ${DOTFILES_REPO}${RESET}"
   cd "${DOTFILES_DIR}" && git pull origin main
-  echo -e "Updating submodules"
+  echo -e "${PURPLE}Updating submodules${RESET}"
   git submodule update --recursive --remote --init
 fi
 
 # Exit if clone or update failed
 if [[ ! test "$?" -eq 0 ]]; then
-  echo -e "ERROR: Failed to clone or update the dotfiles repository. Exiting..."
+  echo -e "${RED}ERROR: ${PURPLE}Failed to clone or update the dotfiles repository. Exiting...${RESET}"
   exit 1
 fi
 
@@ -194,27 +204,27 @@ package_verify "tmux" false
 
 # Configure XDG environment variables
 if [[ -z ${XDG_CONFIG_HOME+x} ]]; then
-  echo -e "Setting XDG_CONFIG_HOME to ${HOME}/.config"
+  echo -e "${PURPLE}Setting ${BLUE}XDG_CONFIG_HOME ${PURPLE}to ${BLUE}${HOME}/.config${RESET}"
   export XDG_CONFIG_HOME="${HOME}/.config"
 fi
 if [[ -z ${XDG_BIN_HOME+x} ]]; then
-  echo -e "Setting XDG_BIN_HOME to ${HOME}/.local/bin"
+  echo -e "${PURPLE}Setting ${BLUE}XDG_BIN_HOME ${PURPLE}to ${BLUE}${HOME}/.local/bin${RESET}"
   export XDG_BIN_HOME="${HOME}/.local/bin"
 fi
 if [[ -z ${XDG_LIB_HOME+x} ]]; then
-  echo -e "Setting XDG_LIB_HOME to ${HOME}/.local/lib"
+  echo -e "${PURPLE}Setting ${BLUE}XDG_LIB_HOME ${PURPLE}to ${BLUE}${HOME}/.local/lib${RESET}"
   export XDG_LIB_HOME="${HOME}/.local/lib"
 fi
 if [[ -z ${XDG_DATA_HOME+x} ]]; then
-  echo -e "Setting XDG_DATA_HOME to ${HOME}/.local/share"
+  echo -e "${PURPLE}Setting ${BLUE}XDG_DATA_HOME ${PURPLE}to ${BLUE}${HOME}/.local/share${RESET}"
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
 if [[ -z ${XDG_STATE_HOME+x} ]]; then
-  echo -e "Setting XDG_STATE_HOME to ${HOME}/.local/state"
+  echo -e "${PURPLE}Setting ${BLUE}XDG_STATE_HOME ${PURPLE}to ${BLUE}${HOME}/.local/state${RESET}"
   export XDG_STATE_HOME="${HOME}/.local/state"
 fi
 if [[ -z ${XDG_CACHE_HOME+x} ]]; then
-  echo -e "Setting XDG_CACHE_HOME to ${HOME}/.cache"
+  echo -e "${PURPLE}Setting ${BLUE}XDG_CACHE_HOME ${PURPLE}to ${BLUE}${HOME}/.cache${RESET}"
   export XDG_CACHE_HOME="${HOME}/.cache"
 fi
 
