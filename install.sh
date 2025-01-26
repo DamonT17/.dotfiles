@@ -150,8 +150,8 @@ trap cleanup EXIT # Cleanup tasks on exit
 if [[ $ARGS == *"--help"* ]]; then
   echo -e "Usage: install.sh [options]"
   echo -e  "Options:\n"\
-    "  --help\tShow help information\n"
-    "  --force\tBypass prompts and auto-accept actions\n"
+    "  --help\tShow help information\n"\
+    "  --force\tBypass prompts and auto-accept actions\n"\
     "  --no-clear\tDo not clear the terminal before script entry\n"
   exit 0
 fi
