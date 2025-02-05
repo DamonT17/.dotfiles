@@ -195,7 +195,7 @@ if [[ ! -d "${DOTFILES_DIR}" ]]; then
   dot config --local status.showUntrackedFiles no
 
   # Checkout the dotfiles
-  if [[ ! dot checkout ]]; then
+  if ! dot checkout; then
     echo -e "${RED}ERROR: ${PURPLE}Conflicting dotfiles detected${RESET}"
     echo -e "${PURPLE}Backing up conflicting files to ${HOME}/.dotfiles.bak...${RESET}"
 
