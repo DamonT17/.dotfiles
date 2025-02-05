@@ -179,9 +179,15 @@ if ! package_exists git; then
 fi
 
 # Clone or update the dotfiles repository
+GIT_BIN=$(which git)
+alias dot="${GIT_BIN} --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+
 if [[ ! -d "${DOTFILES_DIR}" ]]; then
   echo -e "${PURPLE}Cloning ${DOTFILES_REPO} to ${DOTFILES_DIR}${RESET}"
-  mkdir -p "${DOTFILES_DIR}" && git clone --recursive "${DOTFILES_REPO}" "${DOTFILES_DIR}"
+
+  mkdir -p "${DOTFILES_DIR}" && git clone --bare "${DOTFILES_REPO}" "${DOTFILES_DIR}"
+  dot config --local status.showUntrackedFiles no
+  dot checkout
 else
   echo -e "${PURPLE}Updating ${DOTFILES_DIR} from ${DOTFILES_REPO}${RESET}"
   cd "${DOTFILES_DIR}" && git pull origin main
