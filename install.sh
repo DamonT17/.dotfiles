@@ -26,6 +26,8 @@ AUTO_RESPONSE=false     # Auto-accept all user input prompts
 START_TIME=$(date +%s)
 SOURCE_DIR=$(dirname ${0})
 
+GIT_BIN=$(which git) # Path to the git binary
+
 # Colors
 RED='\x1b[31m'
 GREEN='\x1b[32m'
@@ -37,6 +39,11 @@ FAINT='\x1b[2m'
 RESET='\x1b[0m'
 
 #+--- Helper Functions ---+#
+# Use of git against the dotfiles repository
+dot() {
+  ${GIT_BIN} --git-dir="${DOTFILES_DIR}" --work-tree="${HOME}" "$@"
+}
+
 # Check if a package already exists on the system
 package_exists() {
   hash "$1" 2> /dev/null
@@ -185,8 +192,21 @@ if [[ ! -d "${DOTFILES_DIR}" ]]; then
   echo -e "${PURPLE}Cloning ${DOTFILES_REPO} to ${DOTFILES_DIR}${RESET}"
 
   mkdir -p "${DOTFILES_DIR}" && git clone --bare "${DOTFILES_REPO}" "${DOTFILES_DIR}"
-  ${GIT_BIN} --git-dir=${DOTFILES_DIR} --work-tree=${HOME} config --local status.showUntrackedFiles no
-  ${GIT_BIN} --git-dir=${DOTFILES_DIR} --work-tree=${HOME} checkout
+  dot config --local status.showUntrackedFiles no
+
+  # Checkout the dotfiles
+  if [[ ! dot checkout ]]; then
+    echo -e "${RED}ERROR: ${PURPLE}Conflicting dotfiles detected${RESET}"
+    echo -e "${PURPLE}Backing up conflicting files to ${HOME}/.dotfiles.bak...${RESET}"
+
+    mkdir -p "${HOME}/.dotfiles.bak"
+    dot checkout 2>&1 | grep -E "^\s+[^:]+$" | awk '{print $1}' | while read -r FILE; do
+      mv "${HOME}/${FILE}" "${HOME}/.dotfiles.bak/${FILE}"
+    done
+
+    echo -e "${PURPLE}Checking out dotfiles...${RESET}"
+    dot checkout
+  fi
 else
   echo -e "${PURPLE}Updating ${DOTFILES_DIR} from ${DOTFILES_REPO}${RESET}"
   cd "${DOTFILES_DIR}" && git pull origin main
