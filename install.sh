@@ -82,7 +82,7 @@ install_packages_macos() {
 
 # Installs / updates a package using the appropriate package manager for the detected OS
 install_packages() {
-  echo -e "${PURPLE}Do you want to install / update system packages (y/N)${RESET}"
+  echo -e "${PURPLE}Do you want to install / update system packages? (y/N)${RESET}"
   read -t $PROMPT_TIMEOUT -r user_response
   if [[ ! $user_response =~ ^[Yy]$ ]] && [[ $AUTO_RESPONSE != true ]]; then
     echo -e "${YELLOW}Skipping package installation / update${RESET}"
