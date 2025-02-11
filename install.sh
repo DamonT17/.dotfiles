@@ -209,15 +209,16 @@ if [[ ! -d "${DOTFILES_DIR}" ]]; then
   fi
 else
   echo -e "${PURPLE}Updating ${DOTFILES_DIR} from ${DOTFILES_REPO}${RESET}"
-  cd "${DOTFILES_DIR}" && git pull origin main
-  echo -e "${PURPLE}Updating submodules${RESET}"
-  git submodule update --recursive --remote --init
-fi
+  if ! dot pull origin main; then
+    echo -e "${RED}ERROR: ${PURPLE}Failed to update the dotfiles repository. Exiting...${RESET}"
+    exit 1
+  fi
 
-# Exit if clone or update failed
-if [[ ! test "$?" -eq 0 ]]; then
-  echo -e "${RED}ERROR: ${PURPLE}Failed to clone or update the dotfiles repository. Exiting...${RESET}"
-  exit 1
+  echo -e "${PURPLE}Updating ${DOTFILES_DIR} submodules${RESET}"
+  if ! dot submodule update --recursive --remote --init; then
+    echo -e "${RED}ERROR: ${PURPLE}Failed to update the dotfiles submodules. Exiting...${RESET}"
+    exit 1
+  fi
 fi
 
 # Verify core packages are installed
