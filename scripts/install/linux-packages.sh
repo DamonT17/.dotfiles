@@ -20,6 +20,7 @@ RESET='\x1b[0m'
 linux_pkgs=(
   # Essentials
   'git'    # Version control
+  'gh'     # Github CLI
   'tmux'   # Terminal multiplexer
   'curl'   # Transfer data
   'wget'   # Download files
@@ -201,6 +202,7 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
   # neovim (text editor)
   if ! package_exists nvim; then
     echo -e "${PURPLE}Installing ${BLUE}neovim ${PURPLE}...${RESET}"
+    cd ~/.local/bin
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
     sudo rm -rf ~/.local/bin/nvim-linux-x86_64
     sudo tar -C ~/.local/bin -xzf nvim-linux-x86_64.tar.gz
@@ -211,6 +213,9 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
     # Symlink 'nvim-linux86_64/bin/nvim' -> 'nvim'
     echo -e "${PURPLE}Creating symlink for ${BLUE}nvim${PURPLE}...${RESET}"
     sudo ln -s ./nvim-linux86_64/bin/nvim ./nvim
+
+    # Switch back to the user's home directory
+    cd ~
   else
     echo -e "${BLUE}neovim ${PURPLE}is already installed, skipping${RESET}"
   fi

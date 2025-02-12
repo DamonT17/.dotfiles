@@ -13,7 +13,9 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 
 # Set PATH
 #--------------
-export PATH="${XDG_BIN_HOME}:${PATH}"
+if [[ ":${PATH}:" != *":${XDG_BIN_HOME}:"* ]]; then
+  export PATH="${XDG_BIN_HOME}:${PATH}"
+fi
 
 # Set default applications
 #--------------
