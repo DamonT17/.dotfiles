@@ -183,7 +183,7 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
     rm nvim-linux-x86_64.tar.gz
   else
     echo -e "${BLUE}neovim ${PURPLE}is already installed, skipping${RESET}"
-  else
+  fi
 
   fi
 
