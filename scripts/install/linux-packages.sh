@@ -155,13 +155,31 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
     fi
   done
 
-  # Symlink 'batcat' -> 'bat'
-  echo -e "${PURPLE}Creating symlink for ${BLUE}bat${PURPLE}...${RESET}"
-  ln -s $(which batcat) ~/.local/bin/bat
+  # Create user's local bin directory
+  if [[ ! -d ~/.local/bin ]]; then
+    echo -e "${PURPLE}Do you want to create a local bin directory at ${BLUE}~/.local/bin${PURPLE}? (y/N)${RESET}"
+    read -t $PROMPT_TIMEOUT -r user_response
+    if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
+      mkdir -p ~/.local/bin
 
-  # Symlink 'fdfind' -> 'fd'
-  echo -e "${PURPLE}Creating symlink for ${BLUE}fd${PURPLE}...${RESET}"
-  ln -s $(which fdfind) ~/.local/bin/fd
+      # Switch to user's local bin directory
+      cd ~/.local/bin
+
+      # Symlink 'batcat' -> 'bat'
+      echo -e "${PURPLE}Creating symlink for ${BLUE}bat${PURPLE}...${RESET}"
+      sudo ln -s $(which batcat) ./bat
+
+      # Symlink 'fdfind' -> 'fd'
+      echo -e "${PURPLE}Creating symlink for ${BLUE}fd${PURPLE}...${RESET}"
+      sudo ln -s $(which fdfind) ./fd
+
+      # Switch back to the user's home directory
+      cd ~
+    else
+      echo -e "${YELLOW}WARNING: ${PURPLE}Skipping creation of local bin directory...${RESET}"
+      echo -e "${YELLOW}WARNING: ${PURPLE}Useful package symlinks will not be created!${RESET}"
+    fi
+  fi
 
   #+--- Install remaining packages from source (e.g., starship) ---+#
   # fzf (fuzzy finder)
@@ -190,13 +208,11 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
     # Cleanup
     rm nvim-linux-x86_64.tar.gz
 
-    # Symlink 'nvim-linux64/bin/nvim' -> 'nvim'
+    # Symlink 'nvim-linux86_64/bin/nvim' -> 'nvim'
     echo -e "${PURPLE}Creating symlink for ${BLUE}nvim${PURPLE}...${RESET}"
-    sudo ln -s ~/.local/bin/nvim-linux64/bin/nvim ~/.local/bin/nvim
+    sudo ln -s ./nvim-linux86_64/bin/nvim ./nvim
   else
     echo -e "${BLUE}neovim ${PURPLE}is already installed, skipping${RESET}"
-  fi
-
   fi
 
   # starship (prompt)
