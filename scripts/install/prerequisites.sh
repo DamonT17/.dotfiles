@@ -53,11 +53,12 @@ setup_homebrew() {
 # Installs core packages using the appropriate package manager for the detected OS
 install_package() {
   pkg=$1
+
   if [ -f "/etc/debian_version" ] && package_exists apt; then
-    install_debian $pkg # Debian via apt
+    install_debian "${pkg}" # Debian via apt
   elif [ "$(uname -s)" = "Darwin" ]; then
     if ! package_exists brew; then setup_homebrew; fi
-    install_macos $pkg # MacOS via Homebrew
+    install_macos "${pkg}" # MacOS via Homebrew
   else
     echo -e "${YELLOW}Skipping ${pkg}, system type not detected or package manager not found${RESET}"
   fi
@@ -78,7 +79,7 @@ echo -e "${PURPLE}~/.dotfiles --> Core Prerequisite Packages Installation${RESET
 echo -e "${FAINT}This script will install the following core packages:\n"\
   "  - git\n"\
   "  - vim\n"\
-  "  - zsh\n${RESET}"
+  "  - zsh${RESET}"
 
 # Prompt confirmation before continuing
 if [[ ! $* == *"--force"* ]]; then
@@ -92,8 +93,8 @@ fi
 
 # Installs core packages if not present on the system
 for pkg in ${core_packages[@]}; do
-  if ! package_exists $pkg; then
-    install_package $pkg
+  if ! package_exists "${pkg}"; then
+    install_package "${pkg}"
   else
     echo -e "${YELLOW}${pkg} is already installed, skipping${RESET}"
   fi

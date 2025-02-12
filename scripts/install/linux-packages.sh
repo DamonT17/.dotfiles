@@ -28,7 +28,7 @@ linux_pkgs=(
   # CLI tools
   'bat'     # Output highlighting (cat clone)
   'exa'     # List files (ls clone)
-  'fd'      # Find files (find clone)
+  'fd-find' # Find files (find clone)
   'ripgrep' # Search tool (grep clone)
 
   # Languages, compilers, etc.
@@ -155,11 +155,19 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
     fi
   done
 
+  # Symlink 'batcat' -> 'bat'
+  echo -e "${PURPLE}Creating symlink for ${BLUE}bat${PURPLE}...${RESET}"
+  ln -s $(which batcat) ~/.local/bin/bat
+
+  # Symlink 'fdfind' -> 'fd'
+  echo -e "${PURPLE}Creating symlink for ${BLUE}fd${PURPLE}...${RESET}"
+  ln -s $(which fdfind) ~/.local/bin/fd
+
   #+--- Install remaining packages from source (e.g., starship) ---+#
   # fzf (fuzzy finder)
   if ! package_exists fzf; then
     echo -e "${PURPLE}Installing ${BLUE}fzf ${PURPLE}...${RESET}"
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.config/fzf && ~/.config/fzf/install
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.config/fzf && ~/.config/fzf/install --bin
   else
     echo -e "${BLUE}fzf ${PURPLE}is already installed, skipping${RESET}"
   fi
@@ -181,6 +189,10 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
 
     # Cleanup
     rm nvim-linux-x86_64.tar.gz
+
+    # Symlink 'nvim-linux64/bin/nvim' -> 'nvim'
+    echo -e "${PURPLE}Creating symlink for ${BLUE}nvim${PURPLE}...${RESET}"
+    sudo ln -s ~/.local/bin/nvim-linux64/bin/nvim ~/.local/bin/nvim
   else
     echo -e "${BLUE}neovim ${PURPLE}is already installed, skipping${RESET}"
   fi
