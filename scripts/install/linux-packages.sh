@@ -212,7 +212,7 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
 
     # Symlink 'nvim-linux86_64/bin/nvim' -> 'nvim'
     echo -e "${PURPLE}Creating symlink for ${BLUE}nvim${PURPLE}...${RESET}"
-    sudo ln -s ./nvim-linux86_64/bin/nvim ./nvim
+    sudo ln -s ./nvim-linux-x86_64/bin/nvim ./nvim
 
     # Switch back to the user's home directory
     cd ~
