@@ -20,7 +20,6 @@ RESET='\x1b[0m'
 linux_pkgs=(
   # Essentials
   'git'    # Version control
-  'neovim' # Text editor (TODO: Consider pulling latest version from source?)
   'tmux'   # Terminal multiplexer
   'curl'   # Transfer data
   'wget'   # Download files
@@ -30,9 +29,7 @@ linux_pkgs=(
   'bat'     # Output highlighting (cat clone)
   'exa'     # List files (ls clone)
   'fd'      # Find files (find clone)
-  'fzf'     # Fuzzy finder (TODO: Pull from source)
   'ripgrep' # Search tool (grep clone)
-  'zoxide'  # Directory navigation (TODO: Pull from source)
 
   # Languages, compilers, etc.
   'cmake'
@@ -149,14 +146,54 @@ fi
 echo -e "${PURPLE}Do you want to install system packages? (y/N)${RESET}"
 read -t $PROMPT_TIMEOUT -r user_response
 if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
-  for pkg in ${linux_pkgs[@]}; do
+  for pkg in "${linux_pkgs[@]}"; do
     if ! package_exists $pkg; then
       echo -e "${PURPLE}Installing ${BLUE}${pkg}...${RESET}"
-      sudo apt install $pkg --assume-yes
+      sudo apt install "${pkg}" --assume-yes
     else
       echo -e "${BLUE}${pkg} ${PURPLE}is already installed, skipping${RESET}"
     fi
   done
+
+  #+--- Install remaining packages from source (e.g., starship) ---+#
+  # fzf (fuzzy finder)
+  if ! package_exists fzf; then
+    echo -e "${PURPLE}Installing ${BLUE}fzf ${PURPLE}...${RESET}"
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.config/fzf && ~/.config/fzf/install
+  else
+    echo -e "${BLUE}fzf ${PURPLE}is already installed, skipping${RESET}"
+  fi
+
+  # zoxide (directory navigation)
+  if ! package_exists zoxide; then
+    echo -e "${PURPLE}Installing ${BLUE}zoxide ${PURPLE}...${RESET}"
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+  else
+    echo -e "${BLUE}zoxide ${PURPLE}is already installed, skipping${RESET}"
+  fi
+
+  # neovim (text editor)
+  if ! package_exists nvim; then
+    echo -e "${PURPLE}Installing ${BLUE}neovim ${PURPLE}...${RESET}"
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    sudo rm -rf ~/.local/bin/nvim-linux-x86_64
+    sudo tar -C ~/.local/bin -xzf nvim-linux-x86_64.tar.gz
+
+    # Cleanup
+    rm nvim-linux-x86_64.tar.gz
+  else
+    echo -e "${BLUE}neovim ${PURPLE}is already installed, skipping${RESET}"
+  else
+
+  fi
+
+  # starship (prompt)
+  if ! package_exists starship; then
+    echo -e "${PURPLE}Installing ${BLUE}starship ${PURPLE}...${RESET}"
+    curl -sS https://starship.rs/install.sh | sh
+  else
+    echo -e "${BLUE}starship ${PURPLE}is already installed, skipping${RESET}"
+  fi
 fi
 
 echo -e "${GREEN}Installation / update of Linux system packages complete!${RESET}"

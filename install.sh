@@ -206,6 +206,12 @@ if [[ ! -d "${DOTFILES_DIR}" ]]; then
 
     echo -e "${PURPLE}Checking out dotfiles...${RESET}"
     dot checkout
+
+    echo -e "${PURPLE}Updating ${DOTFILES_DIR} submodules${RESET}"
+    if ! dot submodule update --recursive --remote --init; then
+      echo -e "${RED}ERROR: ${PURPLE}Failed to update the dotfiles submodules. Exiting...${RESET}"
+      exit 1
+    fi
   fi
 else
   echo -e "${PURPLE}Updating ${DOTFILES_DIR} from ${DOTFILES_REPO}${RESET}"
