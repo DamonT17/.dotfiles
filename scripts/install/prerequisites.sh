@@ -12,6 +12,7 @@ core_packages=(
 
 # Colors
 YELLOW='\x1b[33m'
+BLUE='\x1b[34m'
 PURPLE='\x1b[35m'
 FAINT='\x1b[2m'
 RESET='\x1b[0m'
@@ -34,13 +35,13 @@ package_exists() {
 
 # Installation on Debian-based systems
 install_debian() {
-  echo -e "${PURPLE}Installing ${1} via apt-get${RESET}"
+  echo -e "${PURPLE}Installing ${BLUE}${1} ${PURPLE}via apt-get${RESET}"
   sudo apt install $1
 }
 
 # Installation on MacOS
 install_macos() {
-  echo -e "${PURPLE}Installing ${1} via Homebrew${RESET}"
+  echo -e "${PURPLE}Installing ${BLUE}${1} ${PURPLE}via Homebrew${RESET}"
   brew install $1
 }
 
@@ -60,7 +61,7 @@ install_package() {
     if ! package_exists brew; then setup_homebrew; fi
     install_macos "${pkg}" # MacOS via Homebrew
   else
-    echo -e "${YELLOW}Skipping ${pkg}, system type not detected or package manager not found${RESET}"
+    echo -e "${YELLOW}Skipping ${BLUE}${pkg}${PURPLE}, system type not detected or package manager not found${RESET}"
   fi
 }
 
@@ -96,7 +97,7 @@ for pkg in ${core_packages[@]}; do
   if ! package_exists "${pkg}"; then
     install_package "${pkg}"
   else
-    echo -e "${YELLOW}${pkg} is already installed, skipping${RESET}"
+    echo -e "${BLUE}${pkg} ${YELLOW}is already installed, skipping${RESET}"
   fi
 done
 

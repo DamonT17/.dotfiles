@@ -1,0 +1,34 @@
+#+--- MacOS-based system packages to install via Homebrew ---+#
+
+#+--- Options ---+#
+cask_args appdir: "~/Applications", require_sha: true
+
+#+--- Taps ---+#
+tap 'homebrew/bundle'
+tap 'homebrew/core'
+tap 'homebrew/services'
+
+# Essentials
+brew 'git'    # Version control
+brew 'gh'     # Github CLI
+brew 'neovim' # Text editor
+brew 'tmux'   # Terminal multiplexer
+
+# Tools
+brew 'bat'     # Output highlighting (cat clone)
+brew 'eza'     # List files (ls clone)
+brew 'fd'      # Find files (find clone)
+brew 'fzf'     # Fuzzy finder
+brew 'ripgrep' # Search tool (grep clone)
+
+# Languages, compilers, etc.
+brew 'cmake'
+brew 'gcc'
+brew 'make'
+brew 'node'
+brew 'python'
+
+# Security
+brew 'gpg'
+brew 'openssl'
+brew 'pass'

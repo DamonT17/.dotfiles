@@ -8,13 +8,13 @@ package_exists() {
 
 # Directory
 #--------------
-if package_exists exa; then
-  alias l="exa --icons --group-directories-first"
-  alias la="exa -a --icons --group-directories-first"   # List all files
-  alias ll="exa -lah --icons --group-directories-first" # List all files with details
-  alias lm="exa -lah --icons -s=modified --reverse"     # Sort by recently modified
-  alias lb="exa -lah --icons -s=size --reverse"         # Sort by size
-  alias tree="f() { exa -a --tree -L=${1:-2} --icons --group-directories-first }; f"
+if package_exists eza; then
+  alias l="eza --icons --group-directories-first"
+  alias la="eza -a --icons --group-directories-first"   # List all files
+  alias ll="eza -lah --icons --group-directories-first" # List all files with details
+  alias lm="eza -lah --icons -s=modified --reverse"     # Sort by recently modified
+  alias lb="eza -lah --icons -s=size --reverse"         # Sort by size
+  alias tree="f() { eza -a --tree -L=${1:-2} --icons --group-directories-first }; f"
 else
   alias la="ls -A"
   alias ll="ls -lAFh"  # List all files with details

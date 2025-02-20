@@ -19,6 +19,6 @@ export FZF_DEFAULT_OPTS='--no-height'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat -p --color=always --line-range :50 {}'"
 export FZF_ALT_C_COMMAND='fd --type d . --color=never'
-export FZF_ALT_C_OPTS="--preview 'exa -T -s new {} | head -50'"
+export FZF_ALT_C_OPTS="--preview 'eza -T -s new {} | head -50'"
 
 source <(fzf --zsh)

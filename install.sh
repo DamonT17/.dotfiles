@@ -69,7 +69,7 @@ install_packages_macos() {
     if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
       echo -e "🍺 ${PURPLE}Installing Homebrew...${RESET}"
       brew_url="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
-      /bin/bash -c "$(curl -fsSL $brew_url)"
+      /bin/bash -c "$(curl -fsSL ${brew_url})"
       export PATH="/opt/homebrew/bin:$PATH"
     else
       echo -e "${PURPLE}Skipping Homebrew installation and installation / update of system packages${RESET}"
@@ -77,7 +77,17 @@ install_packages_macos() {
     fi
   fi
 
-  # TODO: Continue here!
+  # Install / update Homebrew packages
+  if package_exists brew && [[ -f "${HOME}/scripts/install/Brewfile" ]]; then
+    echo -e "${PURPLE} Installing / updating Homebrew packages...${RESET}"
+    brew update
+    brew upgrade
+    brew bundle --global --file ${HOME}/scripts/install/Brewfile # TODO: Switch path to ~/.Brewfile???
+    brew cleanup
+    killall Finder
+  else
+    echo -e "${YELLOW}WARNING: ${PURPLE}Brewfile not found. Skipping...${RESET}"
+  fi
 }
 
 # Installs / updates a package using the appropriate package manager for the detected OS

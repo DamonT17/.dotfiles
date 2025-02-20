@@ -220,6 +220,19 @@ if [[ $user_response =~ ^[Yy]$ ]] || [[ $AUTO_RESPONSE = true ]]; then
     echo -e "${BLUE}neovim ${PURPLE}is already installed, skipping${RESET}"
   fi
 
+  # eza (ls, exa clone)
+  if ! package_exists eza; then
+    echo -e "${PURPLE}Installing ${BLUE}eza ${PURPLE}...${RESET}"
+    sudo mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+    sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    sudo apt update
+    sudo apt install -y eza
+  else
+    echo -e "${BLUE}eza ${PURPLE}is already installed, skipping${RESET}"
+  fi
+
   # starship (prompt)
   if ! package_exists starship; then
     echo -e "${PURPLE}Installing ${BLUE}starship ${PURPLE}...${RESET}"
