@@ -88,6 +88,11 @@ install_packages_macos() {
   else
     echo -e "${YELLOW}WARNING: ${PURPLE}Brewfile not found. Skipping...${RESET}"
   fi
+
+  # Install / update packages not managed by Homebrew
+  package_install_script="${HOME}/scripts/install/macos-packages.sh"
+  chmod +x $package_install_script
+  $package_install_script $ARGS
 }
 
 # Installs / updates a package using the appropriate package manager for the detected OS
@@ -102,7 +107,7 @@ install_packages() {
   if [[ $SYSTEM_TYPE = "Darwin" ]]; then # MacOS
     # MacOS
     install_packages_macos
-  else 
+  else
     # Linux (Debian / Ubuntu)
     package_install_script="${HOME}/scripts/install/linux-packages.sh"
     chmod +x $package_install_script
