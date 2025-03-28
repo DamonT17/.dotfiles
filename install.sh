@@ -82,7 +82,7 @@ install_packages_macos() {
     echo -e "${PURPLE} Installing / updating Homebrew packages...${RESET}"
     brew update
     brew upgrade
-    brew bundle --global --file ${HOME}/scripts/install/Brewfile # TODO: Switch path to ~/.Brewfile???
+    brew bundle --global --file=${HOME}/scripts/install/Brewfile # TODO: Switch path to ~/.Brewfile???
     brew cleanup
     killall Finder
   else

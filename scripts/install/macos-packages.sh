@@ -46,12 +46,6 @@ if [[ $EUID -ne 0 ]]; then
   fi
 fi
 
-# Verify 'apt' package manager is installed
-if ! package_exists apt; then
-  echo "${RED}ERROR: ${BLUE}apt ${PURPLE}package manager is not installed. Exiting...${RESET}"
-  exit 1
-fi
-
 #+--- Install remaining packages from source (e.g., starship) ---+#
 # fzf (fuzzy finder)
 if ! package_exists fzf; then
