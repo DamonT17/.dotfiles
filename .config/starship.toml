@@ -1,32 +1,9 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 palette = "catppuccin_mocha"
-scan_timeout = 10
+scan_timeout = 30
+command_timeout = 500
 
-# Georg.io Powerline
-#---------------
-#format = """
-#[╭](fg:surface2)${custom.sep0}\
-#$directory\
-#${custom.sep1}\
-#$git_branch\
-#$git_status\
-#${custom.sep2}\
-#$docker_context\
-#${custom.sep3}\
-#$time\
-#$cmd_duration\
-#$fill\
-#${custom.ssh_icon}${custom.sep6}\
-#$sudo\
-#${custom.sep7}\
-#$username\
-#$hostname\
-#${custom.sep8}\
-#$shell\
-#${custom.sep9}
-#[╰─](fg:surface2)$character """
-
-#Dalux.io Powerline
+# Starship formatting
 #---------------
 format = """
 [╭](fg:surface2)${custom.sep0}\
@@ -77,6 +54,7 @@ format = '[ $symbol $branch ]($style)'
 [git_status]
 style = "fg:surface0 bg:red"
 format = '[$all_status$ahead_behind ]($style)'
+windows_starship = "/mnt/c/Program Files/starship/bin/starship.exe"
 
 [docker_context]
 symbol = " "
