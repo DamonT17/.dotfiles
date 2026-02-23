@@ -22,6 +22,10 @@ else
   alias lb="ls -lAFSh" # Sort by size
 fi
 
+# Lazy Git
+#--------------
+alias lg="lazygit"
+
 # Terminal
 #--------------
 alias c="clear"
