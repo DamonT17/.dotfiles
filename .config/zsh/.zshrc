@@ -23,7 +23,8 @@ fi
 unsetopt BEEP
 
 # SSH config
-eval "$(ssh-agent -s)"
+# eval "$(ssh-agent -s)"
+eval "$(keychain --eval --quiet ${HOME}/.ssh/id_ed25519)"
 
 #+--- Setup zoxide ---+#
 export _ZO_DATA_DIR=$XDG_DATA_HOME

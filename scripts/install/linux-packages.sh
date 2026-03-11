@@ -43,6 +43,7 @@ linux_pkgs=(
 
   # Security
   'gpg'      # Encryption
+  'keychain' # SSH key manager
   'openssl'  # SSL/TLS toolkit
   'pass'     # Password manager
 

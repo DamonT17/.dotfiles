@@ -28,5 +28,6 @@ brew 'python'
 
 # Security
 brew 'gpg'
+brew 'keychain'
 brew 'openssl'
 brew 'pass'
