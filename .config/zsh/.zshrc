@@ -23,7 +23,6 @@ fi
 unsetopt BEEP
 
 # SSH config
-# eval "$(ssh-agent -s)"
 eval "$(keychain --eval --quiet ${HOME}/.ssh/id_ed25519)"
 
 #+--- Setup zoxide ---+#
