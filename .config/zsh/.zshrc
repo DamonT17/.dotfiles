@@ -31,6 +31,8 @@ export _ZO_DATA_DIR=$XDG_DATA_HOME
 #+--- Setup SML/NJ ---+#
 export SMLROOT="$HOME/.smlnj"
 
+export PATH="$PATH:$HOME/.dotnet/tools" # C# LSP
+
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
